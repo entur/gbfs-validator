@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col>
-        <b-form-input type="url" v-model="url" placeholder="https://exemple.com/gbfs.com"></b-form-input>
+        <b-form-input type="url" v-model="url" placeholder="https://exemple.com/gbfs.json"></b-form-input>
       </b-col>
       <b-col class="flex-grow-0">
         <b-button @click="valid" variant="success" style="white-space: nowrap;">Validate me !</b-button>
@@ -112,11 +112,16 @@ export default {
           type: null,
           basicAuth: { user: null, password: null },
           bearerToken: { token: null },
-          oauthClientCredentialsGrant: { user: null, password: null, tokenUrl: null }
+          oauthClientCredentialsGrant: {
+            user: null,
+            password: null,
+            tokenUrl: null
+          }
         }
       },
       versions: [
         { value: null, text: 'auto-detection' },
+        { value: '2.3-RC', text: 'v2.3-RC' },
         { value: '2.2', text: 'v2.2' },
         { value: '2.1', text: 'v2.1' },
         { value: '2.0', text: 'v2.0' },
@@ -143,6 +148,15 @@ export default {
       ]
     }
   },
+  mounted() {
+    // When specifying ?url=https://example.com/gbfs.json, start
+    // directly a validation
+    const url_query_param = new URL(location.href).searchParams.get('url')
+    if (url_query_param) {
+      this.url = url_query_param
+      this.valid()
+    }
+  },
   methods: {
     valid() {
       this.result = false
@@ -159,11 +173,21 @@ export default {
         .then(result => {
           this.isValidating = false
           this.result = result
+          this.updateURL()
         })
         .catch(result => {
           this.isValidating = false
           this.result = result
         })
+    },
+    updateURL() {
+      const searchParams = new URLSearchParams(window.location.search)
+      searchParams.set('url', this.url)
+      history.pushState(
+        null,
+        '',
+        window.location.pathname + '?' + searchParams.toString()
+      )
     }
   }
 }
