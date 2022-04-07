@@ -27,5 +27,6 @@
     "gbfs-validator",
     "check-systems",
     "functions"
-  ]
+  ],
+  "version": "0.1.0"
 }
