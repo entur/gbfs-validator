@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "eslint": "^8.41.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.27.5",
